@@ -5,3 +5,42 @@ models/
 
 
 .ipynb_checkpoints/
+
+
+__pycache__/
+*.pyc
+*.pyo
+
+venv/
+env/
+.venv/
+
+
+.ipynb_checkpoints/
+
+
+*.h5
+*.pt
+*.pth
+*.pkl
+*.joblib
+
+data/
+datasets/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+.env
+
+*.tar
+
+*.tmp
+*.temp
