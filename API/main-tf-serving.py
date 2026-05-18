@@ -1,4 +1,5 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import numpy as np
 from io import BytesIO
@@ -6,6 +7,19 @@ from PIL import Image
 import requests
 
 app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 endpoint = "http://localhost:8505/v1/models/saved_model:predict"
 CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]
@@ -15,7 +29,7 @@ async def ping():
     return "Alive"
 
 def read_file_as_image(data):
-    image = Image.open(BytesIO(data))
+    image = Image.open(BytesIO(data)).convert("RGB")
     image = image.resize((256, 256))
     return np.array(image)
 
@@ -48,4 +62,4 @@ async def predict(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="localhost", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)

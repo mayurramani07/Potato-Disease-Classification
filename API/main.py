@@ -3,8 +3,24 @@ import uvicorn
 import numpy as np
 from io import BytesIO
 from PIL import Image
+
 app = FastAPI()
+from fastapi.middleware.cors import CORSMiddleware
+
+origins = [
+    "http://localhost",
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 import tensorflow as tf
+from fastapi.middleware.cors import CORSMiddleware
 
 # MODEL = tf.keras.models.load_model("../models/1.h5")
 MODEL = tf.keras.models.load_model(r"C:\Users\user\Desktop\Potato Disease Classification\models\1.h5") 
@@ -37,4 +53,4 @@ async def predict(
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="localhost", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
